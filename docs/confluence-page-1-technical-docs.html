@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; color: #172B4D; max-width: 960px; margin: 40px auto; padding: 0 24px; }
+  h1 { font-size: 28px; font-weight: 700; color: #172B4D; border-bottom: 2px solid #DFE1E6; padding-bottom: 8px; margin-top: 32px; }
+  h2 { font-size: 20px; font-weight: 700; color: #172B4D; margin-top: 32px; }
+  h3 { font-size: 16px; font-weight: 700; color: #172B4D; margin-top: 24px; }
+  hr { border: none; border-top: 1px solid #DFE1E6; margin: 32px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+  th { background: #F4F5F7; text-align: left; padding: 8px 12px; border: 1px solid #DFE1E6; font-weight: 600; }
+  td { padding: 8px 12px; border: 1px solid #DFE1E6; vertical-align: top; }
+  tr:nth-child(even) td { background: #FAFBFC; }
+  pre { background: #F4F5F7; border: 1px solid #DFE1E6; border-radius: 4px; padding: 16px; overflow-x: auto; margin: 16px 0; }
+  code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 13px; }
+  pre code { background: none; }
+  .info { background: #DEEBFF; border-left: 4px solid #0052CC; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  .note { background: #FFFAE6; border-left: 4px solid #FF991F; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  .warning { background: #FFEBE6; border-left: 4px solid #DE350B; padding: 12px 16px; border-radius: 4px; margin: 16px 0; }
+  .panel-title { font-weight: 700; margin-bottom: 4px; }
+  details { border: 1px solid #DFE1E6; border-radius: 4px; padding: 8px 16px; margin: 16px 0; }
+  summary { font-weight: 600; cursor: pointer; padding: 4px 0; }
+  ul { padding-left: 24px; }
+  li { margin: 4px 0; }
+  ol { padding-left: 24px; }
+  p { margin: 8px 0; line-height: 1.6; }
+  .meta { color: #5E6C84; font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>Nordlys Home — Technical Documentation</h1>
+
+<div class="info">
+  <p class="meta"><strong>Document Type:</strong> Technical Reference &nbsp;|&nbsp; <strong>Project:</strong> Nordlys Home Retail SPA &nbsp;|&nbsp; <strong>Last Updated:</strong> 2026-02-24 &nbsp;|&nbsp; <strong>Status:</strong> Active</p>
+</div>
+
+<hr>
+
+<h2>1. Project Overview</h2>
+
+<p>Nordlys Home is a <strong>React 18 single-page application (SPA)</strong> built as a demo and showcase frontend for a fictional Scandinavian home furnishings retail brand. The application presents a complete e-commerce storefront experience including product browsing, category navigation, a shopping bag interaction, and a responsive layout across desktop and mobile viewports.</p>
+
+<p>The project is intended as a frontend-only demonstration and currently contains no backend integration. All product and category data is defined statically within the application source code.</p>
+
+<hr>
+
+<h2>2. Tech Stack</h2>
+
+<table>
+  <thead><tr><th>Component</th><th>Technology</th><th>Version</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>JavaScript Framework</td><td>React</td><td>18.x</td><td>Functional components, hooks</td></tr>
+    <tr><td>Rendering</td><td>React DOM</td><td>18.x</td><td>Client-side rendering only</td></tr>
+    <tr><td>Build Tool</td><td>Vite</td><td>5.x</td><td>Fast HMR dev server, ESBuild bundler</td></tr>
+    <tr><td>React Plugin</td><td>@vitejs/plugin-react</td><td>Latest</td><td>Babel-based JSX transform</td></tr>
+    <tr><td>Styling</td><td>Vanilla CSS3</td><td>—</td><td>Custom properties, Grid, Flexbox</td></tr>
+    <tr><td>Language</td><td>JavaScript (JSX)</td><td>ES2022+</td><td>No TypeScript</td></tr>
+    <tr><td>Package Manager</td><td>npm</td><td>—</td><td>Standard Node package manager</td></tr>
+    <tr><td>Runtime Target</td><td>Modern browsers</td><td>—</td><td>No IE11 support required</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>3. Repository Structure</h2>
+
+<pre><code>ai-sdlc-demo-retail/
+├── src/
+│   ├── main.jsx          # React application entry point — mounts &lt;App /&gt; to #root
+│   ├── App.jsx           # Single monolithic component (248 lines) — all UI sections
+│   └── styles.css        # Global stylesheet (509 lines) — all visual styles
+├── index.html            # Vite HTML entry — contains &lt;div id="root"&gt;
+├── package.json          # Project metadata, scripts, and dependencies
+├── vite.config.js        # Vite configuration — React plugin setup
+└── node_modules/         # Installed dependencies (not committed)</code></pre>
+
+<div class="note">
+  <p><strong>Note:</strong> The project deliberately uses a flat, minimal structure appropriate for a demo showcase. A production application would decompose this into feature folders, shared component libraries, and separate data layers.</p>
+</div>
+
+<hr>
+
+<h2>4. Architecture</h2>
+
+<h3>4.1 Application Architecture</h3>
+
+<p>Nordlys Home is a <strong>pure client-side SPA</strong>. There is no server-side rendering (SSR), no API integration, and no build-time static site generation. The full application lifecycle is:</p>
+
+<ol>
+  <li>The browser loads <em>index.html</em> from a static file host.</li>
+  <li>Vite-bundled JavaScript assets are fetched and executed.</li>
+  <li>React mounts the <em>App</em> component into the <em>#root</em> DOM node via <em>main.jsx</em>.</li>
+  <li>All UI state is managed in-memory via React <em>useState</em> hooks.</li>
+  <li>Navigation between visual sections is CSS-based scrolling — there is no client-side router.</li>
+</ol>
+
+<h3>4.2 Rendering Strategy</h3>
+
+<table>
+  <thead><tr><th>Aspect</th><th>Detail</th></tr></thead>
+  <tbody>
+    <tr><td>Rendering</td><td>Client-Side Rendering (CSR)</td></tr>
+    <tr><td>Routing</td><td>None — single scrollable page</td></tr>
+    <tr><td>Data Fetching</td><td>None — all data is inline/static</td></tr>
+    <tr><td>Code Splitting</td><td>None — single bundle</td></tr>
+    <tr><td>SSR / SSG</td><td>Not implemented</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>5. Component Breakdown</h2>
+
+<p>All UI is contained within a single <em>App.jsx</em> file. The logical sections are rendered as contiguous JSX within the default export function.</p>
+
+<table>
+  <thead><tr><th>Section</th><th>Element / Role</th><th>Key Content</th></tr></thead>
+  <tbody>
+    <tr><td>Header / Nav</td><td>Top navigation bar</td><td>Brand name NORDLYS HOME, nav links (Collections, Rooms, Sale, About), bag count badge, CTA button</td></tr>
+    <tr><td>Hero</td><td>Landing section</td><td>Headline copy, two CTA buttons, product bundle cards (Living Room Set $399, Workspace Bundle $229)</td></tr>
+    <tr><td>Categories</td><td>Room category grid</td><td>Four tiles: Living Room, Bedroom, Kitchen, Office — each with SVG mock image</td></tr>
+    <tr><td>Products</td><td>Product card grid</td><td>Six product cards: LINN Chair $89, SUND Table $129, HEM Lamp $39, BJORK Shelf $59, MILA Ottoman $69, NORA Cabinet $149</td></tr>
+    <tr><td>Perks</td><td>Trust/feature strip</td><td>Three perks: Delivery from $9, Easy Pickup, 30-Day Returns</td></tr>
+    <tr><td>Footer</td><td>Page footer</td><td>Brand tagline, column links, copyright line</td></tr>
+  </tbody>
+</table>
+
+<details>
+  <summary>Product Listing Detail</summary>
+  <table>
+    <thead><tr><th>Product Name</th><th>Price</th><th>Category (Implied)</th></tr></thead>
+    <tbody>
+      <tr><td>LINN Chair</td><td>$89</td><td>Seating</td></tr>
+      <tr><td>SUND Table</td><td>$129</td><td>Tables</td></tr>
+      <tr><td>HEM Lamp</td><td>$39</td><td>Lighting</td></tr>
+      <tr><td>BJORK Shelf</td><td>$59</td><td>Storage</td></tr>
+      <tr><td>MILA Ottoman</td><td>$69</td><td>Seating</td></tr>
+      <tr><td>NORA Cabinet</td><td>$149</td><td>Storage</td></tr>
+    </tbody>
+  </table>
+</details>
+
+<hr>
+
+<h2>6. Data Models</h2>
+
+<p>All data is defined as inline JavaScript arrays and objects within <em>App.jsx</em>. There is no external data source or schema enforcement.</p>
+
+<h3>6.1 Product</h3>
+<pre><code>// Implied shape of a product object
+{
+  id: String,          // e.g. "linn-chair"
+  name: String,        // e.g. "LINN Chair"
+  price: Number,       // e.g. 89
+  image: String,       // SVG data URI (inline mock image)
+  category: String     // e.g. "Seating"
+}</code></pre>
+
+<h3>6.2 Category</h3>
+<pre><code>// Implied shape of a category object
+{
+  id: String,          // e.g. "living-room"
+  label: String,       // e.g. "Living Room"
+  image: String        // SVG data URI
+}</code></pre>
+
+<h3>6.3 Perk</h3>
+<pre><code>// Implied shape of a perk object
+{
+  icon: String,        // SVG or unicode icon
+  title: String,       // e.g. "Delivery from $9"
+  description: String  // Supporting copy
+}</code></pre>
+
+<hr>
+
+<h2>7. State Management</h2>
+
+<p>State is managed exclusively with React's built-in <em>useState</em> hook. There is no external state library (no Redux, Zustand, or Context API).</p>
+
+<table>
+  <thead><tr><th>State Variable</th><th>Type</th><th>Initial Value</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td>bagCount</td><td>Number</td><td>0</td><td>Tracks the number of items added to the shopping bag; displayed in the nav badge</td></tr>
+    <tr><td>lastAdded</td><td>String | null</td><td>null</td><td>Stores the name of the most recently added product; used to display a transient toast/notification</td></tr>
+  </tbody>
+</table>
+
+<pre><code>const [bagCount, setBagCount] = useState(0);
+const [lastAdded, setLastAdded] = useState(null);</code></pre>
+
+<p><strong>State update flow:</strong> When a user clicks "Add to Bag" on a product card, <em>setBagCount</em> increments the counter and <em>setLastAdded</em> stores the product name. A visual notification is shown and then cleared after a timeout.</p>
+
+<hr>
+
+<h2>8. Styling Conventions</h2>
+
+<h3>8.1 Approach</h3>
+<p>All styles are defined in a single global <em>styles.css</em> file (509 lines). No CSS modules, styled-components, or CSS-in-JS libraries are used.</p>
+
+<h3>8.2 CSS Custom Properties</h3>
+<p>Design tokens are defined as CSS custom properties on <em>:root</em> for consistent theming:</p>
+<pre><code>:root {
+  --color-brand: /* primary brand color */;
+  --color-bg:    /* background */;
+  --color-text:  /* primary text */;
+  --radius:      /* border radius token */;
+  --shadow:      /* box shadow token */;
+}</code></pre>
+
+<h3>8.3 Responsive Breakpoints</h3>
+<table>
+  <thead><tr><th>Breakpoint</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td>980px</td><td>Tablet — grid columns reduce, nav condenses</td></tr>
+    <tr><td>640px</td><td>Mobile — single column layout, stacked navigation</td></tr>
+  </tbody>
+</table>
+
+<h3>8.4 Layout Techniques</h3>
+<ul>
+  <li><strong>CSS Grid</strong> — used for product grid, category grid, and hero bundle cards</li>
+  <li><strong>Flexbox</strong> — used for nav bar, perks strip, and footer columns</li>
+  <li><strong>SVG data URIs</strong> — used as inline mock product and category images (no external image assets required)</li>
+</ul>
+
+<hr>
+
+<h2>9. Development Setup</h2>
+
+<h3>9.1 Prerequisites</h3>
+<table>
+  <thead><tr><th>Requirement</th><th>Version</th></tr></thead>
+  <tbody>
+    <tr><td>Node.js</td><td>18.x or later</td></tr>
+    <tr><td>npm</td><td>9.x or later</td></tr>
+  </tbody>
+</table>
+
+<h3>9.2 Installation</h3>
+<pre><code># Clone the repository
+git clone &lt;repository-url&gt;
+cd ai-sdlc-demo-retail
+
+# Install dependencies
+npm install</code></pre>
+
+<h3>9.3 Available Scripts</h3>
+<table>
+  <thead><tr><th>Script</th><th>Command</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>Development Server</td><td><code>npm run dev</code></td><td>Starts Vite HMR dev server, typically on http://localhost:5173</td></tr>
+    <tr><td>Production Build</td><td><code>npm run build</code></td><td>Outputs optimised static assets to /dist</td></tr>
+    <tr><td>Preview Build</td><td><code>npm run preview</code></td><td>Serves the /dist output locally for pre-deployment verification</td></tr>
+  </tbody>
+</table>
+
+<pre><code># Start development
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview</code></pre>
+
+<hr>
+
+<h2>10. Build and Deployment</h2>
+
+<h3>10.1 Build Output</h3>
+<p>Running <em>npm run build</em> produces a <em>/dist</em> directory containing:</p>
+<ul>
+  <li><em>index.html</em> — HTML entry point with hashed asset references</li>
+  <li><em>assets/</em> — Hashed JS and CSS bundles (e.g. <em>index-[hash].js</em>, <em>index-[hash].css</em>)</li>
+</ul>
+
+<h3>10.2 Deployment</h3>
+<p>Because the output is a collection of purely static files, the <em>/dist</em> folder can be deployed to any static hosting provider:</p>
+<ul>
+  <li>Firebase Hosting</li>
+  <li>Google Cloud Storage + Cloud CDN</li>
+  <li>Netlify / Vercel</li>
+  <li>AWS S3 + CloudFront</li>
+  <li>GitHub Pages</li>
+</ul>
+
+<div class="info">
+  <p><strong>Info:</strong> No server-side runtime is required. The hosting platform only needs to serve static files and redirect all paths to <em>index.html</em> for SPA routing (not currently applicable since there is no client-side router, but required if routing is added in future).</p>
+</div>
+
+<h3>10.3 Environment Variables</h3>
+<p>No environment variables are currently used. If a backend API is integrated in future, a <em>VITE_API_BASE_URL</em> variable should be introduced via a <em>.env</em> file and accessed as <code>import.meta.env.VITE_API_BASE_URL</code>.</p>
+
+<hr>
+
+<h2>11. Known Limitations and Future Improvements</h2>
+
+<h3>11.1 Current Limitations</h3>
+<table>
+  <thead><tr><th>Area</th><th>Limitation</th></tr></thead>
+  <tbody>
+    <tr><td>Data</td><td>All product and category data is hardcoded inline in App.jsx</td></tr>
+    <tr><td>Routing</td><td>No client-side router — application is a single scrollable page</td></tr>
+    <tr><td>Backend</td><td>No API integration — cart interactions are UI-only and non-persistent</td></tr>
+    <tr><td>Auth</td><td>No user authentication or session management</td></tr>
+    <tr><td>Accessibility</td><td>Semantic HTML and ARIA roles have not been audited</td></tr>
+    <tr><td>Testing</td><td>No unit, integration, or e2e tests are present</td></tr>
+    <tr><td>TypeScript</td><td>No type safety — all code is plain JavaScript</td></tr>
+    <tr><td>Component Structure</td><td>All UI is in a single 248-line App.jsx — no decomposition</td></tr>
+  </tbody>
+</table>
+
+<h3>11.2 Recommended Future Improvements</h3>
+<ol>
+  <li><strong>Decompose App.jsx</strong> into individual feature components (Header, ProductGrid, CategoryGrid, Footer, etc.) in a <em>src/components/</em> directory.</li>
+  <li><strong>Introduce React Router</strong> (v6) for proper URL-based navigation between product detail pages, cart, and checkout.</li>
+  <li><strong>Replace inline data</strong> with API calls to a real or mocked backend — use <em>React Query</em> or <em>SWR</em> for data fetching and caching.</li>
+  <li><strong>Add TypeScript</strong> — define interfaces for Product, Category, CartItem, and component props.</li>
+  <li><strong>Implement a cart store</strong> using Zustand or React Context + useReducer for persistent, structured cart state.</li>
+  <li><strong>Add a test suite</strong> — Vitest + React Testing Library for unit and integration tests; Playwright for e2e.</li>
+  <li><strong>Audit accessibility</strong> — ensure all interactive elements have appropriate ARIA labels, keyboard navigation, and focus management.</li>
+  <li><strong>Integrate a design token system</strong> — formalise the existing CSS custom properties into a structured token file.</li>
+</ol>
+
+</body>
+</html>

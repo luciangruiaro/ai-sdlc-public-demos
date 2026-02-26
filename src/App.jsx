@@ -1,247 +1,232 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-const makeMockImage = (label, bg, accent) => {
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" role="img" aria-label="${label}">
-      <defs>
-        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0%" stop-color="${bg}" />
-          <stop offset="100%" stop-color="${accent}" />
-        </linearGradient>
-      </defs>
-      <rect width="960" height="640" fill="url(#bg)" />
-      <circle cx="820" cy="110" r="84" fill="rgba(255,255,255,0.28)" />
-      <rect x="90" y="360" width="780" height="170" rx="22" fill="rgba(255,255,255,0.56)" />
-      <rect x="122" y="390" width="140" height="110" rx="12" fill="rgba(16,22,29,0.14)" />
-      <rect x="282" y="390" width="420" height="72" rx="10" fill="rgba(16,22,29,0.12)" />
-      <rect x="728" y="390" width="110" height="110" rx="12" fill="rgba(16,22,29,0.16)" />
-      <text x="110" y="120" fill="#0f273f" font-family="Arial, sans-serif" font-size="54" font-weight="700">${label}</text>
-      <text x="110" y="170" fill="#173d63" font-family="Arial, sans-serif" font-size="24">Mock image preview</text>
-    </svg>
-  `;
-
-  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-};
-
-const heroImage = makeMockImage("Nordlys Room Set", "#cbe6ff", "#f7fbff");
-
-const categories = [
+const services = [
   {
-    name: "Living Room",
-    hint: "Sofas, storage and lighting",
-    image: makeMockImage("Living Room", "#d7e9fb", "#fff5be"),
+    id: "cloud",
+    title: "Cloud Platforms",
+    summary: "Modernize operations with secure cloud-native architecture.",
+    detail:
+      "We migrate legacy workflows, automate release pipelines, and reduce infrastructure overhead by up to 35% in mock benchmark projects."
   },
   {
-    name: "Bedroom",
-    hint: "Better sleep, smarter space",
-    image: makeMockImage("Bedroom", "#d6f2ec", "#f1f8ff"),
+    id: "retail",
+    title: "Retail Intelligence",
+    summary: "Convert customer data into real-time demand signals.",
+    detail:
+      "Our fictional retail engine combines POS, loyalty, and fulfillment data into a unified planning layer for faster decisions."
   },
   {
-    name: "Kitchen",
-    hint: "Cookware and compact systems",
-    image: makeMockImage("Kitchen", "#ffe7ce", "#fffdf1"),
-  },
-  {
-    name: "Office",
-    hint: "Desk setups for focus",
-    image: makeMockImage("Office", "#dbe8ff", "#edf4ff"),
-  },
+    id: "experience",
+    title: "Digital Experience",
+    summary: "Design frictionless channels across web, mobile, and in-store.",
+    detail:
+      "From UX strategy to implementation, we build customer journeys that improve conversion and reduce support friction."
+  }
 ];
 
-const products = [
-  {
-    name: "LINN Chair",
-    price: "$89.00",
-    tag: "Best Seller",
-    image: makeMockImage("LINN Chair", "#e9f4ff", "#fff3b8"),
-  },
-  {
-    name: "SUND Table",
-    price: "$129.00",
-    tag: "New",
-    image: makeMockImage("SUND Table", "#f2f9ff", "#d7e8ff"),
-  },
-  {
-    name: "HEM Lamp",
-    price: "$39.00",
-    tag: "Limited",
-    image: makeMockImage("HEM Lamp", "#fff4d8", "#ffe4ba"),
-  },
-  {
-    name: "BJORK Shelf",
-    price: "$59.00",
-    tag: "Top Rated",
-    image: makeMockImage("BJORK Shelf", "#dcecff", "#f3f7ff"),
-  },
-  {
-    name: "MILA Ottoman",
-    price: "$69.00",
-    tag: "Popular",
-    image: makeMockImage("MILA Ottoman", "#ecf8ef", "#d9eeff"),
-  },
-  {
-    name: "NORA Cabinet",
-    price: "$149.00",
-    tag: "Save 15%",
-    image: makeMockImage("NORA Cabinet", "#dce9ff", "#ffe8cb"),
-  },
+const insights = [
+  "Navigating 2026 supply-chain volatility with AI forecasting.",
+  "How composable commerce accelerates release speed.",
+  "Blueprint: resilient omnichannel fulfillment in 90 days."
 ];
 
-const perks = [
-  { title: "Delivery from $9", text: "Fast, flat-rate shipping nationwide." },
-  { title: "Easy pickup", text: "Collect your order in as little as 2 hours." },
-  { title: "30-day returns", text: "Simple returns for unopened products." },
+const cases = [
+  { label: "National Grocer", value: "32% faster forecasting cycles" },
+  { label: "Fashion Marketplace", value: "18% higher repeat purchase rate" },
+  { label: "Electronics Retailer", value: "41% faster launch readiness" }
 ];
 
-export default function App() {
-  const [bagCount, setBagCount] = useState(0);
-  const [lastAdded, setLastAdded] = useState("");
+function App() {
+  const [activeService, setActiveService] = useState("cloud");
+  const [submitted, setSubmitted] = useState(false);
 
   const scrollToSection = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    const node = document.getElementById(id);
+    if (node) {
+      node.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  const addToBag = (productName) => {
-    setBagCount((count) => count + 1);
-    setLastAdded(`${productName} added to bag.`);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSubmitted(true);
   };
 
   return (
-    <div className="page">
+    <div className="page-shell" id="top">
       <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">N</span>
-          <span className="brand-name">NORDLYS HOME</span>
-        </div>
-        <nav className="main-nav">
-          <a href="#shop">Shop</a>
-          <a href="#rooms">Rooms</a>
-          <a href="#deals">Deals</a>
-          <a href="#inspiration">Inspiration</a>
+        <a className="brand" href="#top">
+          NORTHSTAR DIGITAL
+        </a>
+        <nav className="topnav">
+          <a href="#services">Services</a>
+          <a href="#insights">Insights</a>
+          <a href="#cases">Results</a>
         </nav>
-        <button
-          className="header-cta"
-          onClick={() => scrollToSection("deals")}
-          type="button"
-        >
-          Start shopping
+        <button className="btn btn-small" onClick={() => scrollToSection("contact")}>
+          Start a Project
         </button>
       </header>
 
       <main>
-        <section className="hero" id="shop">
+        <section className="hero panel">
           <div className="hero-copy">
-            <p className="eyebrow">New season collection</p>
-            <h1>Smart design for every corner of your home.</h1>
+            <p className="eyebrow">Fictional Enterprise Partner</p>
+            <h1>We build resilient retail systems for what is next.</h1>
             <p>
-              Discover practical furniture, warm lighting, and storage ideas
-              made for real life, at everyday low prices.
+              Northstar Digital helps global retailers modernize platforms,
+              accelerate releases, and turn operational data into confident
+              decisions.
             </p>
             <div className="hero-actions">
-              <button
-                className="primary"
-                onClick={() => scrollToSection("deals")}
-                type="button"
-              >
-                Explore products
+              <button className="btn" onClick={() => scrollToSection("services")}>
+                Explore Services
               </button>
-              <button
-                className="secondary"
-                onClick={() => scrollToSection("inspiration")}
-                type="button"
-              >
-                See inspiration
+              <button className="btn btn-ghost" onClick={() => scrollToSection("contact")}>
+                Talk to Team
               </button>
             </div>
           </div>
-          <div className="hero-visual">
-            <img
-              className="hero-photo"
-              src={heroImage}
-              alt="Mocked room image for the featured collection"
-            />
-            <div className="visual-card visual-card-a">
-              <span>Living Room Set</span>
-              <strong>$399</strong>
-            </div>
-            <div className="visual-card visual-card-b">
-              <span>Workspace Bundle</span>
-              <strong>$229</strong>
-            </div>
+          <aside className="hero-card">
+            <h2>2026 Snapshot</h2>
+            <ul>
+              <li>
+                <strong>120+</strong>
+                <span>Retail programs delivered</span>
+              </li>
+              <li>
+                <strong>17 countries</strong>
+                <span>Operational support footprint</span>
+              </li>
+              <li>
+                <strong>24/7</strong>
+                <span>Managed reliability coverage</span>
+              </li>
+            </ul>
+          </aside>
+        </section>
+
+        <section className="metric-row">
+          <article className="metric panel">
+            <p className="metric-number">99.98%</p>
+            <p>Platform availability in managed environments</p>
+          </article>
+          <article className="metric panel">
+            <p className="metric-number">4.3x</p>
+            <p>Typical speed-up from data-informed promotion planning</p>
+          </article>
+          <article className="metric panel">
+            <p className="metric-number">8 weeks</p>
+            <p>Median timeline to deploy first value increment</p>
+          </article>
+        </section>
+
+        <section className="section" id="services">
+          <div className="section-head">
+            <p className="eyebrow">Services</p>
+            <h2>Execution built for enterprise scale.</h2>
+          </div>
+          <div className="card-grid">
+            {services.map((service) => {
+              const isOpen = service.id === activeService;
+              return (
+                <article className="panel service-card" key={service.id}>
+                  <h3>{service.title}</h3>
+                  <p>{service.summary}</p>
+                  <button
+                    className="text-btn"
+                    onClick={() => setActiveService(isOpen ? "" : service.id)}
+                  >
+                    {isOpen ? "Hide details" : "Show details"}
+                  </button>
+                  {isOpen && <p className="service-detail">{service.detail}</p>}
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        <section className="categories" id="rooms">
-          <div className="section-heading">
-            <h2>Shop by room</h2>
+        <section className="section" id="insights">
+          <div className="section-head">
+            <p className="eyebrow">Latest Insights</p>
+            <h2>Perspective from strategy to delivery.</h2>
           </div>
-          <div className="category-grid">
-            {categories.map((category) => (
-              <article className="category-card" key={category.name}>
-                <img
-                  className="category-image"
-                  src={category.image}
-                  alt={`${category.name} mock setup`}
-                />
-                <h3>{category.name}</h3>
-                <p>{category.hint}</p>
-                <button
-                  className="category-btn"
-                  onClick={() => scrollToSection("deals")}
-                  type="button"
-                >
-                  Browse room
+          <div className="insight-list">
+            {insights.map((item) => (
+              <article key={item} className="panel insight-card">
+                <p>{item}</p>
+                <button className="text-btn" onClick={() => scrollToSection("contact")}>
+                  Discuss this topic
                 </button>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="products" id="deals">
-          <div className="section-heading">
-            <h2>Featured picks</h2>
-            <a href="#shop">View all</a>
+        <section className="section" id="cases">
+          <div className="section-head">
+            <p className="eyebrow">Client Results</p>
+            <h2>Mock outcomes from fictional programs.</h2>
           </div>
-          <p className="bag-status">
-            Bag: <strong>{bagCount}</strong>{" "}
-            {lastAdded ? <span>{lastAdded}</span> : null}
-          </p>
-          <div className="product-grid">
-            {products.map((product) => (
-              <article className="product-card" key={product.name}>
-                <img
-                  className="product-thumb"
-                  src={product.image}
-                  alt={`${product.name} mock product image`}
-                />
-                <span className="product-tag">{product.tag}</span>
-                <h3>{product.name}</h3>
-                <p className="product-price">{product.price}</p>
-                <button onClick={() => addToBag(product.name)} type="button">
-                  Add to bag
+          <div className="case-grid">
+            {cases.map((item) => (
+              <article key={item.label} className="panel case-card">
+                <p className="case-value">{item.value}</p>
+                <p>{item.label}</p>
+                <button className="text-btn" onClick={() => scrollToSection("contact")}>
+                  See similar plan
                 </button>
               </article>
             ))}
           </div>
         </section>
 
-        <section className="perks" id="inspiration">
-          {perks.map((perk) => (
-            <article key={perk.title}>
-              <h3>{perk.title}</h3>
-              <p>{perk.text}</p>
-            </article>
-          ))}
+        <section className="section contact panel" id="contact">
+          <div>
+            <p className="eyebrow">Contact</p>
+            <h2>Plan your next delivery cycle with us.</h2>
+            <p>
+              This is a mocked contact block for demo purposes. The submit
+              button is functional and returns an on-page confirmation.
+            </p>
+          </div>
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <label htmlFor="name">Name</label>
+            <input id="name" type="text" placeholder="Jordan Lee" required />
+
+            <label htmlFor="email">Work Email</label>
+            <input id="email" type="email" placeholder="jordan@company.com" required />
+
+            <label htmlFor="focus">Focus Area</label>
+            <select id="focus" defaultValue="Cloud Platforms">
+              <option>Cloud Platforms</option>
+              <option>Retail Intelligence</option>
+              <option>Digital Experience</option>
+            </select>
+
+            <button className="btn" type="submit">
+              Send Message
+            </button>
+            {submitted && (
+              <p className="submit-note">Thanks. Your demo request has been recorded.</p>
+            )}
+          </form>
         </section>
       </main>
 
       <footer className="footer">
-        <p>Nordlys Home</p>
-        <small>Design for everyday life.</small>
+        <p>
+          Built by{" "}
+          <a href="https://www.cgi.com" target="_blank" rel="noopener noreferrer" className="footer-link">
+            CGI.com
+          </a>
+        </p>
+        <button className="text-btn" onClick={() => scrollToSection("top")}>
+          Back to top
+        </button>
       </footer>
     </div>
   );
 }
+
+export default App;
